@@ -1,0 +1,55 @@
+{
+    "auth": {
+        "url": "http://213.238.157.9/api",
+        "publicUser": "beyoglu@bel.com.tr",
+        "publicUsername": "beyoglu"
+    },
+    "proxyUrl": {
+        "url": "proxy/?url="
+    },
+    "wfsUrl": "http://213.238.157.9:8080/geoserver/beyoglurehber/ows?service=WFS&version=1.0.0&request=GetFeature&srsName=EPSG%3A3857&outputFormat=application%2Fjson",
+    "nobetciEczaneUrl": "https://api.gazisoft.com/services.php?service=pharmacy&district=beyoglu",
+    "imarServisi": "http://kentrehberi.beyoglu.bel.tr:8080/EImar/imarDurum.jspx?parselKodu=",
+    "poiCategoryUrl": "http://www.smartbeyoglu.com/api/category.php?Type=6",
+    "poiUrl": "http://www.smartbeyoglu.com/api/getfirms.php?Category=",
+    "startingPoint": [
+        28.961845,
+        41.042265
+    ],
+    "initialZoom": 14,
+    "minZoom": 14,
+    "maxZoom": 21,
+    "beyogluExtent": [
+        3216713.3243182143,
+        5015157.184877166,
+        3231322.3513492187,
+        5021998.298908689
+    ],
+    "gps2014TableIndex": 0,
+    "gps2018TableIndex": 1,
+    "gps2020TableIndex": 2,
+    "mainUrl": "localhost",
+    "geoserverUrl": "http://213.238.157.9:8080/geoserver/",
+    "baseLayers": {
+        "ankaMap": {
+            "title": "AnkaMap",
+            "version": "1.3.0",
+            "url": "http://213.238.157.9:8080/geoserver/beyoglurehber/wms",
+            "layers": "beyoglurehber:bey_kentrehber",
+            "tiled": true,
+            "format": "image/png",
+            "autoload": true,
+            "visible": true
+        },
+        "ilceLayer": {
+            "title": "IlceLayer",
+            "version": "1.3.0",
+            "url": "http://213.238.157.9:8080/geoserver/beyoglurehber/wms",
+            "layers": "beyoglurehber:bey_ilce",
+            "tiled": false,
+            "format": "image/png",
+            "autoload": true,
+            "visible": true
+        }
+    }
+}

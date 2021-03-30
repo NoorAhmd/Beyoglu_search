@@ -1,0 +1,37 @@
+.map:hover .imageMap {
+  opacity: 0.5;
+  transition: 5ms ;
+}
+.map:hover .titleMap {
+  display: block;
+  transition: 15ms;
+}
+.imageMap {
+  width:60px;
+  cursor: pointer;
+}
+.titleMap {
+  display: none;                                                           
+  position: absolute;
+  bottom: 10px;
+  /* font-weight: small; */
+  color: black;
+  font-size: 13px;
+  text-align: center;
+  width: 17%;
+  cursor: pointer;
+}
+.map{
+  display: inline-block !important;
+  margin-right: 2px;
+  padding-left: 4px;
+  padding-top: 2px;
+}
+.baseMaps{
+  display: inline !important;
+  margin-left: -40px;
+  margin-right: 0px;
+}
+.mapSwitcher{
+  width: 330px;
+}

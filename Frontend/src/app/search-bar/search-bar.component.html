@@ -1,0 +1,6 @@
+<input (input)="onSearch($event)" type="text" id="searchBar" placeholder="Ara" required>
+<div class="results">
+  <div class="result" *ngFor="let result of searchResults">
+    {{result._source}}
+  </div>
+</div>

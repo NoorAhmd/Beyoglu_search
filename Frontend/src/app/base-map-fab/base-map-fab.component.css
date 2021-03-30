@@ -1,0 +1,35 @@
+.mapContainer {
+  position: absolute !important;
+  left: 10px !important;
+  bottom: 30px !important;
+}
+.btnMap {
+  border-radius: 50%;
+  border: 1px solid #18ab29;
+  width: 50px;
+  height: 50px;
+  background-color: #17a2b8;
+  margin: 1px;
+  position: absolute;
+  bottom: 0px;
+  display: flex;
+  justify-content: center;
+}
+.mapContainer .baseMapSwitcher {
+  display: none;
+  position: absolute;
+  border: 2px #82ff50 solid;
+  background: #20969c;
+  padding: 2px;
+  border-radius: 10px;
+  /* width: 339px !important;
+  height: 65px; */
+  bottom: -8px;
+  left: -9px;
+}
+/* when button in mapContainer is hovered & the baseMapSwitcher class inside 
+is hovered open the map switcher */
+.mapContainer button:hover+.baseMapSwitcher,
+.mapContainer .baseMapSwitcher:hover {
+  display: block;
+}
