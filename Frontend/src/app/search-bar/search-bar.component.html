@@ -1,6 +1,15 @@
 <input (input)="onSearch($event)" type="text" id="searchBar" placeholder="Ara" required>
+<button id="resetMap" (click)="resetMe()">reset</button>
 <div class="results">
-  <div class="result" *ngFor="let result of searchResults">
-    {{result._source}}
+  <div class="result" *ngFor="let result of searchResults" (click)=location(result)>
+    <div *ngIf="result._source.mahalle_ad">
+      Mahalle adi: {{result._source.mahalle_ad}}
+    </div>
+    <div *ngIf="result._source.cadde_so_1">
+      Sokak adi: {{result._source.cadde_so_1}}
+    </div>
+    <div *ngIf="result._source.adi_numara">
+      Kapi no: {{result._source.adi_numara}}
+    </div>
   </div>
 </div>

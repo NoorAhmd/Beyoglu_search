@@ -60,16 +60,17 @@ const connectDB = async () => {
     console.log("connected to DB")
     return result
 }
+//ST_AsText(geom)
 const getMahalleData = async () => {
-    let result = await client.query('SELECT mahalle_ad from bey_mahalle')
+    let result = await client.query('SELECT mahalle_ad, ST_AsText(geom) from bey_mahalle')
     return result.rows
 }
 const getSokakData = async () => {
-    let result = await client.query('SELECT cadde_so_1 from bey_sokak')
+    let result = await client.query('SELECT cadde_so_1, ST_AsText(geom) from bey_sokak')
     return result.rows
 }
 const getBinaData = async () => {
-    let result = await client.query('SELECT adi_numara from bey_kapino')
+    let result = await client.query('SELECT adi_numara, ST_AsText(geom) from bey_kapino')
     return result.rows
 }
 const createIndex = async () => {

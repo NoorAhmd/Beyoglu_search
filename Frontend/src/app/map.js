@@ -17,12 +17,9 @@ import ol_ImageLayer from 'ol/layer/image'
 import ol_ImageWms from 'ol/source/imagewms'
 
 const mapInit = (config) => {
-
-
     var interactionSelectPointerMove = new ol_interaction_select({
         condition: ol_event_condition.pointerMove
     });
-
     window.map = new Map({
         target: 'map',
         controls: [],
