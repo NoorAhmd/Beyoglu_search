@@ -1,6 +1,7 @@
 {
-  "name": "ankamap",
-  "version": "0.0.0",
+  "name": "search",
+  "author": "Noor Ahmad",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open",

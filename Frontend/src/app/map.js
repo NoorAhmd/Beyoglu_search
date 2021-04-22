@@ -44,9 +44,6 @@ const mapInit = (config) => {
         maxZoom: config.maxZoom
     }));
 
-    //https://viglino.github.io/ol-ext/examples/control/map.switcher.image.html
-    //map.addControl (new ol_control_LayerImage());
-
     var ilce = config.baseLayers.ilceLayer;
     //diğer ilçeleri maskeleyen katman
     var ilceLayer = new ol_ImageLayer({
@@ -62,7 +59,7 @@ const mapInit = (config) => {
             }
         })
     });
-    map.addLayer(ilceLayer);
+    //map.addLayer(ilceLayer);
 
     return map;
 }

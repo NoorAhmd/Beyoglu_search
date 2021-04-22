@@ -1,8 +1,0 @@
-<div class="mapSwitcher">
-  <ul class="baseMaps">
-    <li *ngFor="let map of baseMaps" class="map" (click)="changeBaseMaps(map)">
-      <img class="imageMap" src="{{map.get('image')}}" alt="{{map.get('title')}}">
-      <div class="titleMap">{{map.get('title')}}</div>
-    </li>
-  </ul>
-</div>

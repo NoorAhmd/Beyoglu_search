@@ -1,7 +1,6 @@
-import { DataService } from './services/data.service'
+
 import { Component, OnInit } from '@angular/core'
 import { MapService } from './services/map.service'
-import * as config from '../../config.json'
 
 @Component({
   selector: 'app-root',

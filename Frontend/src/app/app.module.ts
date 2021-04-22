@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser'
 import { NgModule } from '@angular/core'
 import { AppComponent } from './app.component'
-import { BaseMapComponent } from './base-map-fab/base-map/base-map.component'
 import { HttpClientModule } from '@angular/common/http'
 import { FormsModule } from '@angular/forms'
 import {
@@ -19,7 +18,7 @@ import { ZoomButtonComponent } from './zoom-button/zoom-button.component'
 
 
 @NgModule({
-  declarations: [AppComponent, BaseMapComponent, MapComponent, BaseMapFabComponent, ZoomButtonComponent, SearchBarComponent],
+  declarations: [AppComponent, MapComponent, BaseMapFabComponent, ZoomButtonComponent, SearchBarComponent],
   imports: [
     BrowserModule,
     HttpClientModule,

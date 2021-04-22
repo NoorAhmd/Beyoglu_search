@@ -1,7 +1,7 @@
 <input (input)="onSearch($event)" type="text" id="searchBar" placeholder="Ara" required>
 <button id="resetMap" (click)="resetMe()">reset</button>
 <div class="results">
-  <div class="result" *ngFor="let result of searchResults" (click)=location(result)>
+  <div class="result" *ngFor="let result of searchResults" (click)=goToLocation(result) style="cursor: pointer;">
     <div *ngIf="result._source.mahalle_ad">
       Mahalle adi: {{result._source.mahalle_ad}}
     </div>

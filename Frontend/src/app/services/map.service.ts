@@ -1,24 +1,22 @@
 import { Injectable, KeyValueDiffers } from '@angular/core'
-
-
 import Map from 'ol/MAP'
 import View from 'ol/View'
-
-import TileLayer from 'ol/layer/tile'
-import LayerVector from 'ol/layer/Vector'
-import SourceVector from 'ol/source/Vector'
-import OLStyle from 'ol/style/Style'
-import Stroke from 'ol/style/Stroke'
-import Fill from 'ol/style/Fill'
-
 import { HttpClient } from '../../../node_modules/@angular/common/http'
 import { DataService } from 'src/app/services/data.service'
 
-import ol_source_tileWms from "ol/source/tilewms";
-import _ol_extent_ from 'ol/extent'
+import TileLayer from 'ol/layer/tile'
+import VectorSource from 'ol/source/vector';
+import VectorLayer from 'ol/layer/vector';
+import Fill from 'ol/style/fill';
+import Stroke from 'ol/style/stroke';
+import Style from 'ol/style/Style';
 
-import ol_ImageLayer from 'ol/layer/image'
-import ol_ImageWms from 'ol/source/imagewms'
+import TileWms from "ol/source/tilewms";
+import Extent from 'ol/extent'
+
+import ImageLayer from 'ol/layer/image'
+import ImageWms from 'ol/source/imagewms'
+
 import { getCenter } from 'ol/extent'
 import * as config from '../../../config.json'
 
@@ -55,9 +53,9 @@ export class MapService {
   }
 
   createHighlightLayer() {
-    this._highlightedLayer = new LayerVector({
-      source: new SourceVector(),
-      style: new OLStyle({
+    this._highlightedLayer = new VectorLayer({
+      source: new VectorSource(),
+      style: new Style({
         stroke: new Stroke({
           color: '#f11',
           width: 2
@@ -73,11 +71,11 @@ export class MapService {
   createBaseMaps() {
     if (this._map !== undefined) {
       const ilce = config.baseLayers.ilceLayer;
-      var ilceLayer = new ol_ImageLayer({
+      var ilceLayer = new ImageLayer({
         title: 'Ilce Katmani',
         visible: true,
         zIndex: 99,
-        source: new ol_ImageWms({
+        source: new ImageWms({
           url: ilce.url,
           params: {
             'FORMAT': ilce.format,
@@ -90,7 +88,7 @@ export class MapService {
         baseLayer: true,
         visible: true,
         preview: "img/preview.png",
-        source: new ol_source_tileWms({
+        source: new TileWms({
           url: config.baseLayers.ankaMap.url,
           params: {
             'FORMAT': config.baseLayers.ankaMap.format,
@@ -100,7 +98,7 @@ export class MapService {
 
           }
         })
-      });
+      })
       const baseMap = this._baseMaps
       this._map.addLayer(ilceLayer);
       this._map.addLayer(anka);

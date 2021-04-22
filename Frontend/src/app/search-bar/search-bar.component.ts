@@ -1,50 +1,50 @@
 import { MapService } from './../services/map.service'
 import { Component, OnInit } from '@angular/core'
-
-import ol_source_vector from 'ol/source/vector';
-import ol_layer_vector from 'ol/layer/vector';
-import ol_feature from 'ol/feature';
-import ol_format from 'ol/format/wkt';
-import ol_extent from 'ol/extent';
-import ol_style_fill from 'ol/style/fill';
-import ol_style_stroke from 'ol/style/stroke';
-import ol_style from 'ol/style/Style';
-
-import proj from 'ol/proj';
-
-import ol_style_circle from "ol/style/circle";
 import { HttpClient } from '@angular/common/http';
 
+import VectorSource from 'ol/source/vector';
+import VectorLayer from 'ol/layer/vector';
+import Feature from 'ol/feature';
+import Format from 'ol/format/wkt';
+import Fill from 'ol/style/fill';
+import Stroke from 'ol/style/stroke';
+import Style from 'ol/style/Style';
+import Circle from "ol/style/circle";
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.css']
 })
-export class SearchBarComponent implements OnInit {
+export class SearchBarComponent {
 
   constructor(private httpClient: HttpClient, private mapService: MapService) { }
 
   searchResults: Array<any>;
-  vectorSource: any
-  vectorPolygons: Array<any>
-  vectorPolygon: any
+  vectorSource: VectorSource
+  vectorLayer: VectorLayer
   layerArray: any
 
 
-  ngOnInit() {
-  }
-  async resetMe() {
-    if (this.vectorPolygon) {
-      await this.removeLayer()
-    }
+  source(feature: Feature) {
+    this.vectorSource = new VectorSource({
+      features: [feature]
+    })
+    this.vectorLayer = new VectorLayer({
+      source: this.vectorSource,
+      displayInLayerSwitcher: false,
+      style: this.styleMe(feature)
+    })
   }
   async removeLayer() {
-    let layerArray: string | any[]
-    layerArray = this.mapService._map.getLayers().getArray()
-    for await (const layer of layerArray) {
-      if (layer.type == "VECTOR") {
-        this.mapService._map.removeLayer(layer)
+    const layersToRemove = [];
+    this.mapService._map.getLayers().forEach(function (layer: { type: string; }) {
+      if (layer.type === "VECTOR") {
+        layersToRemove.push(layer);
       }
+    })
+    var len = layersToRemove.length;
+    for (var i = 0; i < len; i++) {
+      this.mapService._map.removeLayer(layersToRemove[i]);
     }
   }
   onSearch(params: any) {
@@ -61,68 +61,49 @@ export class SearchBarComponent implements OnInit {
     }
   }
   drawLocation(results: any) {
-    results.map(res => {
-      const format = new ol_format()
+    results.map((res: { _source: { st_astext: any; }; }) => {
+      const format = new Format()
       const feature = format.readFeature(res._source.st_astext, {
         dataProjection: 'EPSG:4326',
         featureProjection: 'EPSG:3857'
       })
-      this.vectorSource = new ol_source_vector({
-        features: [feature]
-      })
-      this.vectorPolygon = new ol_layer_vector({
-        source: this.vectorSource,
-        displayInLayerSwitcher: false,
-        style: this.styleMe(feature)
-      })
-      this.removeLayer()
-      this.mapService._map.addLayer(this.vectorPolygon)
-      //this.vectorPolygons.push(this.vectorPolygon)
-      //this.mapService._map.getView().fit(this.vectorSource.getExtent(), { size: this.mapService._map.getSize(), maxZoom: 19 })
+      this.source(feature)
+      this.mapService._map.addLayer(this.vectorLayer)
     })
   }
-  styleMe(feature) {
+  styleMe(feature: Feature) {
     let style: any
     if (feature.getGeometry().getType() == "Point") {
-      var fill = new ol_style_fill({
-        color: 'rgba(209, 11, 32,0.4)'
-      });
-      var stroke = new ol_style_stroke({
-        color: '#3399CC',
-        width: 1.25
-      });
-      style = [
-        new ol_style({
-          image: new ol_style_circle({
-            fill: fill,
-            stroke: stroke,
-            radius: 5
-          }),
-          fill: fill,
-          stroke: stroke
+      style = new Style({
+        image: new Circle({
+          radius: 5,
+          fill: new Fill({ color: '#FFFF00' }),
+          // stroke: new Stroke({
+          //   color: [255, 0, 0], width: 2
+          // })
         })
-      ];
+      })
     }
     else {
-      style = new ol_style({
-        fill: new ol_style_stroke({
+      style = new Style({
+        fill: new Stroke({
           color: '#863564'
         }),
-        stroke: new ol_style_stroke({
+        stroke: new Stroke({
           color: '#863564',
           width: 5
         })
       })
-      return style
     }
+    return style
   }
-  location(result) {
-    const format = new ol_format()
+  goToLocation(result: any) {
+    const format = new Format()
     const feature = format.readFeature(result._source.st_astext, {
       dataProjection: 'EPSG:4326',
       featureProjection: 'EPSG:3857'
     })
-    let vectorSource = new ol_source_vector({
+    let vectorSource = new VectorSource({
       features: [feature]
     })
     this.mapService._map.getView().fit(vectorSource.getExtent(), { size: this.mapService._map.getSize(), maxZoom: 19 })
