@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core'
 import { HttpClient } from '@angular/common/http';
 
 import VectorSource from 'ol/source/vector';
+import View from 'ol/View'
+import { getCenter } from 'ol/extent'
 import VectorLayer from 'ol/layer/vector';
 import Feature from 'ol/feature';
 import Format from 'ol/format/wkt';
@@ -22,8 +24,6 @@ export class SearchBarComponent {
   searchResults: Array<any>;
   vectorSource: VectorSource
   vectorLayer: VectorLayer
-  layerArray: any
-
 
   source(feature: Feature) {
     this.vectorSource = new VectorSource({
@@ -47,11 +47,26 @@ export class SearchBarComponent {
       this.mapService._map.removeLayer(layersToRemove[i]);
     }
   }
+  resetMe() {
+    let extent = [3216713.3243182143,
+      5015157.184877166,
+      3231322.3513492187,
+      5021998.298908689]
+    let view = new View({
+      extent: extent,
+      center: getCenter(extent),
+      zoom: 14,
+      minZoom: 2,
+      maxZoom: 20,
+    })
+    this.mapService._map.setView(view)
+  }
   onSearch(params: any) {
     if (params.target.value !== "") {
       this.httpClient.get('http://127.0.0.1:3001/search?q=' + params.target.value).subscribe((response: any) => {
         this.searchResults = response
         this.removeLayer()
+        this.resetMe()
         this.drawLocation(this.searchResults)
         return response
       })
@@ -77,10 +92,18 @@ export class SearchBarComponent {
       style = new Style({
         image: new Circle({
           radius: 5,
-          fill: new Fill({ color: '#FFFF00' }),
-          // stroke: new Stroke({
-          //   color: [255, 0, 0], width: 2
-          // })
+          fill: new Fill({ color: '#6FA5F7' }),
+        })
+      })
+    }
+    else if (feature.getGeometry().getType() == "MultiLineString") {
+      style = new Style({
+        fill: new Stroke({
+          color: '#FF5733'
+        }),
+        stroke: new Stroke({
+          color: '#FF5733',
+          width: 5
         })
       })
     }

@@ -65,15 +65,16 @@
   z-index: 9999;
   top: 52px;
   left: 30px;
-  background-color: #fff;
+  background-color: #ffffffb8;
   overflow: auto;
-  width: 296px!important;
+  width: 300px!important;
   line-height: 30px;
   font-size: 16px;
+  max-height: 90%;
 }
 
 .result {
-  border: 5px solid #863564;
+  border: 2px solid #863564;
   border-top: none;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   padding: 5px;
