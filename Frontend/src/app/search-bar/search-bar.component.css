@@ -73,6 +73,9 @@
   max-height: 90%;
 }
 
+.result:hover{
+  background-color: #fff;
+}
 .result {
   border: 2px solid #863564;
   border-top: none;

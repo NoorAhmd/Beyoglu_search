@@ -12,30 +12,41 @@ import Fill from 'ol/style/fill';
 import Stroke from 'ol/style/stroke';
 import Style from 'ol/style/Style';
 import Circle from "ol/style/circle";
+import Select from 'ol/interaction/Select'
+import { altKeyOnly, click, pointerMove } from 'ol/events/condition';
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.css']
 })
 export class SearchBarComponent {
-
   constructor(private httpClient: HttpClient, private mapService: MapService) { }
 
   searchResults: Array<any>;
   vectorSource: VectorSource
   vectorLayer: VectorLayer
 
-  source(feature: Feature) {
+  sourceAll(feature: Feature) {
     this.vectorSource = new VectorSource({
       features: [feature]
     })
     this.vectorLayer = new VectorLayer({
       source: this.vectorSource,
       displayInLayerSwitcher: false,
-      style: this.styleMe(feature)
+      style: this.styleAll(feature)
     })
   }
-  async removeLayer() {
+  sourceOne(feature: Feature) {
+    this.vectorSource = new VectorSource({
+      features: [feature]
+    })
+    this.vectorLayer = new VectorLayer({
+      source: this.vectorSource,
+      displayInLayerSwitcher: false,
+      style: this.styleOne(feature)
+    })
+  }
+  removeLayer() {
     const layersToRemove = [];
     this.mapService._map.getLayers().forEach(function (layer: { type: string; }) {
       if (layer.type === "VECTOR") {
@@ -46,6 +57,42 @@ export class SearchBarComponent {
     for (var i = 0; i < len; i++) {
       this.mapService._map.removeLayer(layersToRemove[i]);
     }
+  }
+  hover(result: { _source: { st_astext: any; }; }) {
+    const format = new Format()
+    const feature = format.readFeature(result._source.st_astext, {
+      dataProjection: 'EPSG:4326',
+      featureProjection: 'EPSG:3857'
+    })
+    let start: number
+    const selectedStyle = new Style({
+      stroke: new Stroke({
+        width: 2,
+        color: 'blue'
+      }),
+      fill: new Fill()
+    });
+    const selectPointerMove = new Select({
+      condition: pointerMove,
+      style: function (feature: Feature) {
+        var elapsed = new Date().getTime() - start;
+        var opacity = Math.min(0.3 + elapsed / 10000, 0.8);
+        selectedStyle.getFill().setColor('rgba(255,0,0,' + opacity + ')');
+        feature.changed();
+        return selectedStyle;
+      }
+    });
+    //selectPointerMove.on('select', function () { start = new Date().getTime(); });
+    this.mapService._map.addInteraction(selectPointerMove);
+
+    // const format = new Format()
+    // const feature = format.readFeature(result._source.st_astext, {
+    //   dataProjection: 'EPSG:4326',
+    //   featureProjection: 'EPSG:3857'
+    // })
+    // console.log(feature);
+    // this.sourceOne(feature)
+    // this.mapService._map.addLayer(this.vectorLayer)
   }
   resetMe() {
     let extent = [3216713.3243182143,
@@ -82,27 +129,28 @@ export class SearchBarComponent {
         dataProjection: 'EPSG:4326',
         featureProjection: 'EPSG:3857'
       })
-      this.source(feature)
+      this.sourceAll(feature)
       this.mapService._map.addLayer(this.vectorLayer)
     })
   }
-  styleMe(feature: Feature) {
+
+  styleOne(feature: Feature) {
     let style: any
     if (feature.getGeometry().getType() == "Point") {
       style = new Style({
         image: new Circle({
           radius: 5,
-          fill: new Fill({ color: '#6FA5F7' }),
+          fill: new Fill({ color: '#626567' }),
         })
       })
     }
     else if (feature.getGeometry().getType() == "MultiLineString") {
       style = new Style({
         fill: new Stroke({
-          color: '#FF5733'
+          color: '#626567'
         }),
         stroke: new Stroke({
-          color: '#FF5733',
+          color: '#626567',
           width: 5
         })
       })
@@ -110,11 +158,37 @@ export class SearchBarComponent {
     else {
       style = new Style({
         fill: new Stroke({
-          color: '#863564'
+          color: 'rgba(28, 142, 37 ,0.5)'
+        })
+      })
+    }
+    return style
+  }
+  styleAll(feature: Feature) {
+    let style: any
+    if (feature.getGeometry().getType() == "Point") {
+      style = new Style({
+        image: new Circle({
+          radius: 3,
+          fill: new Fill({ color: '#93FFE8' }),
+        })
+      })
+    }
+    else if (feature.getGeometry().getType() == "MultiLineString") {
+      style = new Style({
+        fill: new Stroke({
+          color: '#ADDFFF'
         }),
         stroke: new Stroke({
-          color: '#863564',
+          color: '#ADDFFF',
           width: 5
+        })
+      })
+    }
+    else {
+      style = new Style({
+        fill: new Stroke({
+          color: 'rgba(87, 254, 255,0.5)'
         })
       })
     }
