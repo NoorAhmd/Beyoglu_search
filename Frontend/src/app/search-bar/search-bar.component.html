@@ -1,17 +1,34 @@
-<input (input)="onSearch($event)" type="text" id="searchBar" placeholder="Ara" required>
-<button id="resetMap" (click)="resetMe()">reset</button>
+<input (input)="onSearch($event)" type="text" id="searchBar" placeholder="Lütfen ilçe adı veya yurt adı giriniz! "
+  required>
+<!-- <button id="resetMap" (click)="getAll()">reset</button> -->
 <div class="results">
   <div class="result" *ngFor="let result of searchResults" (click)="goToLocation(result)" style="cursor: pointer">
-    <div *ngIf="result._source.mahalle_ad">
-      Mahalle adi: {{result._source.mahalle_ad}}
+    <div *ngIf="result._source.dormitory_name">
+      <span style="font-size:small;">Yurt adı</span>: {{result._source.dormitory_name}}
     </div>
-    <div *ngIf="result._source.cadde_so_1">
-      Sokak adi: {{result._source.cadde_so_1}}
+    <div *ngIf="result._source.adres">
+      <strong>Adres:</strong> {{result._source.adres}}
     </div>
-    <div *ngIf="result._source.adi_numara">
-      Kapi no: {{result._source.adi_numara}}
+    <div *ngIf="result._source.telefon">
+      <strong>Telefon:</strong> {{result._source.telefon}}
     </div>
   </div>
+  <!-- <div class="result" *ngFor="let result of extentResults" style="cursor: pointer">
+    <div *ngIf="result.dormitory_name">
+      <b>Yurt adı</b>: {{result.dormitory_name}}
+    </div>
+    <div *ngIf="result.adres">
+      <b>Adres:</b> {{result.adres}}
+    </div>
+    <div *ngIf="result.telefon">
+      <b>Telefon:</b> {{result.telefon}}
+    </div>
+  </div> -->
+</div>
+
+<div id="popup" class="ol-popup">
+  <!-- <a href="#" id="popup-closer" class="ol-popup-closer"></a> -->
+  <div id="popup-content"></div>
 </div>
 
 <!-- <div class="result" *ngFor="let result of searchResults" (click)="goToLocation(result)" (mouseenter)="hover(result)" -->

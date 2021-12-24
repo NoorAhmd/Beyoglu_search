@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
     //this.mapService.mapInit(config)
     this.mapService.createMap(document.getElementById('olMAP'))
     this.mapService.createBaseMaps()
-    this.mapService.createHighlightLayer()
+    //this.mapService.createHighlightLayer()
     // var ctrl = new ol_control_cloud({ opacity: $("#opacity").val(), density: $("#density").val(), windSpeed: Number($("#ws").val()), windAngle: Number($("#wa").val()) * Math.PI / 180 });
     // this.mapService._map.addControl(ctrl);
 

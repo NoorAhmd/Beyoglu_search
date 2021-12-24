@@ -15,6 +15,7 @@ import { SearchBarComponent } from './search-bar/search-bar.component'
 import { MapComponent } from './map/map.component'
 import { BaseMapFabComponent } from './base-map-fab/base-map-fab.component'
 import { ZoomButtonComponent } from './zoom-button/zoom-button.component'
+import * as $ from "jquery";
 
 
 @NgModule({

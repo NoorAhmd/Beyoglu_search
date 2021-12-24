@@ -12,10 +12,10 @@ export class ZoomButtonComponent implements OnInit {
   ngOnInit() {
   }
 
-  animateZoom(zoomLevel) {
-    this.view.animate({
-      zoom: this.view.getZoom() + zoomLevel,
-      duration: 450,
-    })
-  }
+  // animateZoom(zoomLevel) {
+  //   this.view.animate({
+  //     zoom: this.view.getZoom() + zoomLevel,
+  //     duration: 450,
+  //   })
+  // }
 }

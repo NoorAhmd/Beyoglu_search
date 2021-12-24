@@ -1,23 +1,20 @@
 import { Injectable, KeyValueDiffers } from '@angular/core'
 import Map from 'ol/MAP'
+import Control from 'ol/control/Control';
 import View from 'ol/View'
 import { HttpClient } from '../../../node_modules/@angular/common/http'
 import { DataService } from 'src/app/services/data.service'
 
-import TileLayer from 'ol/layer/tile'
-import VectorSource from 'ol/source/vector';
-import VectorLayer from 'ol/layer/vector';
-import Fill from 'ol/style/fill';
-import Stroke from 'ol/style/stroke';
+import TileLayer from 'ol/layer/Tile'
+import VectorSource from 'ol/source/Vector';
+import VectorLayer from 'ol/layer/Vector';
+import Fill from 'ol/style/Fill';
+import Stroke from 'ol/style/Stroke';
 import Style from 'ol/style/Style';
+import { fromLonLat } from 'ol/proj'
 
-import TileWms from "ol/source/tilewms";
-import Extent from 'ol/extent'
+import TileWms from "ol/source/Tilewms";
 
-import ImageLayer from 'ol/layer/image'
-import ImageWms from 'ol/source/imagewms'
-
-import { getCenter } from 'ol/extent'
 import * as config from '../../../config.json'
 
 
@@ -34,21 +31,19 @@ export class MapService {
   constructor(private http: HttpClient, private dataService: DataService) { }
 
   createMap(mapElement) {
-    let extent = [3216713.3243182143,
-      5015157.184877166,
-      3231322.3513492187,
-      5021998.298908689]
+    let extent = fromLonLat([28.6314, 41.0128])
+
     this._view = new View({
-      extent: extent,
-      center: getCenter(extent),
-      zoom: 14,
+      center: extent,
+      zoom: 10,
       minZoom: 2,
-      maxZoom: 20,
+      maxZoom: 50,
     })
 
     this._map = new Map({
       target: mapElement,
-      view: this._view
+      view: this._view,
+
     })
   }
 
@@ -70,20 +65,6 @@ export class MapService {
 
   createBaseMaps() {
     if (this._map !== undefined) {
-      const ilce = config.baseLayers.ilceLayer;
-      var ilceLayer = new ImageLayer({
-        title: 'Ilce Katmani',
-        visible: true,
-        zIndex: 99,
-        source: new ImageWms({
-          url: ilce.url,
-          params: {
-            'FORMAT': ilce.format,
-            'VERSION': ilce.version,
-            LAYERS: ilce.layers
-          }
-        })
-      })
       const anka = new TileLayer({
         baseLayer: true,
         visible: true,
@@ -100,7 +81,7 @@ export class MapService {
         })
       })
       const baseMap = this._baseMaps
-      this._map.addLayer(ilceLayer);
+      //this._map.addLayer(ilceLayer);
       this._map.addLayer(anka);
     } else {
       // TODO: Map Not initialized
