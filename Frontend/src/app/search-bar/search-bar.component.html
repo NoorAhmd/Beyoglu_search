@@ -1,19 +1,12 @@
-<input (input)="onSearch($event)" type="text" id="searchBar" placeholder="Lütfen ilçe adı veya yurt adı giriniz! "
-  required>
+<input (input)="onSearch($event)" type="text" id="searchBar" placeholder="Search! " required />
 <!-- <button id="resetMap" (click)="getAll()">reset</button> -->
 <div class="results">
-  <div class="result" *ngFor="let result of searchResults" (click)="goToLocation(result)" style="cursor: pointer">
-    <div *ngIf="result._source.dormitory_name">
-      <span style="font-size:small;">Yurt adı</span>: {{result._source.dormitory_name}}
+    <div class="result" *ngFor="let result of searchResults" (click)="goToLocation(result)" style="cursor: pointer">
+        <div *ngIf="result._source.ad">{{ result._source.ad }}</div>
+        <div *ngIf="result._source.adres">{{ result._source.adres }}</div>
+        <div *ngIf="result._source.telefon">{{ result._source.telefon }}</div>
     </div>
-    <div *ngIf="result._source.adres">
-      <strong>Adres:</strong> {{result._source.adres}}
-    </div>
-    <div *ngIf="result._source.telefon">
-      <strong>Telefon:</strong> {{result._source.telefon}}
-    </div>
-  </div>
-  <!-- <div class="result" *ngFor="let result of extentResults" style="cursor: pointer">
+    <!-- <div class="result" *ngFor="let result of extentResults" style="cursor: pointer">
     <div *ngIf="result.dormitory_name">
       <b>Yurt adı</b>: {{result.dormitory_name}}
     </div>
@@ -27,8 +20,8 @@
 </div>
 
 <div id="popup" class="ol-popup">
-  <!-- <a href="#" id="popup-closer" class="ol-popup-closer"></a> -->
-  <div id="popup-content"></div>
+    <!-- <a href="#" id="popup-closer" class="ol-popup-closer"></a> -->
+    <div id="popup-content"></div>
 </div>
 
 <!-- <div class="result" *ngFor="let result of searchResults" (click)="goToLocation(result)" (mouseenter)="hover(result)" -->

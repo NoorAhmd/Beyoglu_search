@@ -1,7 +1,7 @@
 const Elasticsearch = require('elasticsearch')
 const path = require('path')
 const jsonFile = './data/cities.json'
-const indexName = 'test2'
+const indexName = 'new3'
 const typeName = '_doc'
 
 const cities = require(jsonFile)
@@ -18,59 +18,54 @@ elasticClient.ping({ requestTimeout: 60000 }, (err) => {
 })
 
 let body = {
-    "settings": {
-        "analysis": {
-            "filter": {
-                "my_ascii_folding": {
-                    "type": "asciifolding",
-                    "preserve_original": true
-                }
+    settings: {
+        analysis: {
+            filter: {
+                my_ascii_folding: {
+                    type: 'asciifolding',
+                    preserve_original: true,
+                },
             },
-            "analyzer": {
-                "turkish_analyzer": {
-                    "tokenizer": "standard",
-                    "filter": [
-                        "lowercase",
-                        "my_ascii_folding"
-                    ]
-                }
-            }
-        }
+            analyzer: {
+                turkish_analyzer: {
+                    tokenizer: 'standard',
+                    filter: ['lowercase', 'my_ascii_folding'],
+                },
+            },
+        },
     },
-    "mappings": {
-        "properties": {
-            "mahalle_ad": {
-                "type": "text",
-                "analyzer": "turkish_analyzer"
+    mappings: {
+        properties: {
+            adi_numara: {
+                type: 'text',
+                analyzer: 'turkish_analyzer',
             },
-            "cadde_so_1": {
-                "type": "text",
-                "analyzer": "turkish_analyzer"
-            },
-            "adi_numara": {
-                "type": "text",
-                "analyzer": "turkish_analyzer"
-            }
-        }
-    }
+        },
+    },
 }
 
 const connectDB = async () => {
     const result = await client.connect()
-    console.log("connected to DB")
+    console.log('connected to DB')
     return result
 }
 //ST_AsText(geom)
 const getMahalleData = async () => {
-    let result = await client.query('SELECT mahalle_ad, ST_AsText(geom) from bey_mahalle')
+    let result = await client.query(
+        'SELECT mahalle_ad, ST_AsText(geom) from bey_mahalle'
+    )
     return result.rows
 }
 const getSokakData = async () => {
-    let result = await client.query('SELECT cadde_so_1, ST_AsText(geom) from bey_sokak')
+    let result = await client.query(
+        'SELECT cadde_so_1, ST_AsText(geom) from bey_sokak'
+    )
     return result.rows
 }
 const getBinaData = async () => {
-    let result = await client.query('SELECT adi_numara, ST_AsText(geom) from bey_kapino')
+    let result = await client.query(
+        'SELECT adi_numara, ST_AsText(geom) from bey_kapino'
+    )
     return result.rows
 }
 const createIndex = async () => {
@@ -79,18 +74,18 @@ const createIndex = async () => {
 
 let bulk = []
 const bulkIndex = async (result) => {
-    result.forEach(res => {
+    result.forEach((res) => {
         bulk.push({
             index: {
                 _index: indexName,
-                _type: typeName
-            }
+                _type: typeName,
+            },
         })
         bulk.push(res)
     })
 }
 
-(async () => {
+;(async () => {
     try {
         await connectDB()
         let mahalle = await getMahalleData()
@@ -106,7 +101,3 @@ const bulkIndex = async (result) => {
         console.log(error)
     }
 })()
-
-
-
-
